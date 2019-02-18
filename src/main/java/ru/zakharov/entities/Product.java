@@ -1,11 +1,36 @@
 package ru.zakharov.entities;
 
-public class Product {
-    private Long id;
-    private String title;
-    private Double coast;
+import javax.persistence.*;
+import java.util.List;
 
-    public Product() {
+@Entity
+@Table(name = "products")
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "price")
+    private int price;
+
+    @ManyToOne
+    @JoinColumn(name = "manufacturer_id")
+    private Manufacturer manufacturer;
+
+    @ManyToMany
+    @JoinTable(
+            name = "clients_products",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "client_id")
+    )
+    private List<Client> clients;
+
+    public List<Client> getClients() {
+        return clients;
     }
 
     public Long getId() {
@@ -24,11 +49,27 @@ public class Product {
         this.title = title;
     }
 
-    public Double getCoast() {
-        return coast;
+    public Manufacturer getManufacturer() {
+        return manufacturer;
     }
 
-    public void setCoast(Double coast) {
-        this.coast = coast;
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public Product() {
+    }
+
+    @Override
+    public String toString() {
+        return "Product id = " + id + ", title = " + title + ", manufacturer "+ manufacturer.getTitle() + ", price = " + price;
     }
 }
