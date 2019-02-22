@@ -1,29 +1,15 @@
 package ru.zakharov.repositories;
 
-import org.springframework.stereotype.Component;
+import org.springframework.data.repository.CrudRepository;
+
+import org.springframework.stereotype.Repository;
 import ru.zakharov.entities.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class ProductsRepository {
-    private List<Product> products = new ArrayList<>();
-
-    public Product getProductById(Long id) {
-        for (int i = 0; i < products.size(); i++) {
-            if (products.get(i).getId() == id) {
-                return products.get(i);
-            }
-        }
-        return null;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void addProduct(Product product) {
-        products.add(product);
-    }
+@Repository
+public interface ProductsRepository extends CrudRepository<Product,Long> {
+    public Product findProductById(Long id);
+    public List<Product> findProductsByPriceBetween(int min,int max);
+    public List<Product> findAll();
 }
