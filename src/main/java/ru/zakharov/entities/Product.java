@@ -57,6 +57,7 @@ public class Product {
         this.manufacturer = manufacturer;
     }
 
+
     public int getPrice() {
         return price;
     }
